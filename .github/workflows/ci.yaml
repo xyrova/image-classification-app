@@ -1,12 +1,12 @@
 name: CI
 
 on:
+    # For manual testing
+    workflow_dispatch:
     push:
         branches: [main]
         tags:
         -   'v*.*.*'
-    # For manual testing
-    workflow_dispatch:
 
 jobs:
     test:
