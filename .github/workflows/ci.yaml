@@ -65,6 +65,7 @@ jobs:
             uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd #v6.3.0
             with:
                 role-to-assume: arn:aws:iam::412341941552:role/xyrova-image-app
+                aws-region: us-east-1
 
         -   name: Install dvc and Pull the Models
             run: |
