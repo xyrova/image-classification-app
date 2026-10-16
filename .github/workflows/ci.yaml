@@ -74,10 +74,16 @@ jobs:
                 role-to-assume: arn:aws:iam::412341941552:role/xyrova-image-app
                 aws-region: us-east-1
 
+        -   name: Debug S3 access
+            run: |
+                aws sts get-caller-identity
+                aws s3 ls s3://dvc-412341941552-ap-south-1-an/ --recursive | head -3
+
+
         -   name: Install dvc and Pull the Models
             run: |
                 pip install dvc[s3]
-                dvc pull models/model.joblib models/feature_selector.joblib
+                dvc pull -v models/model.joblib models/feature_selector.joblib
           
         -   name: Login to Docker Registry (ECR)
             uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 #v4.0.0
