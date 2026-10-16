@@ -1,0 +1,9 @@
+# Ignore everything, then allow only what the inference image needs
+*
+!requirements-lock.txt
+!params.yaml
+!src/mlp.py
+!models/*.joblib
+!app/
+
+**/__pycache__
