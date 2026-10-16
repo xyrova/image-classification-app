@@ -61,6 +61,13 @@ jobs:
                 cache: 'pip'
                 cache-dependency-path: 'requirements-lock.txt'
 
+        -   name: Debug OIDC claims
+            run: |
+                curl -sH "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+                  "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" \
+                  | jq -r .value | cut -d. -f2 | tr '_-' '/+' | base64 -d 2>/dev/null | jq '{sub, aud, repository}'
+
+
         -   name: Configure AWS Credentials
             uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd #v6.3.0
             with:
