@@ -8,6 +8,12 @@ on:
         tags:
         -   'v*.*.*'
 
+# only one workflow run( the latest one) at a time even if multiple events
+# trigger the workflow at the same time
+concurrency:
+    group: ${{ github.workflow }}
+    cancel-in-progress: true
+
 jobs:
     test:
         name: Unit Testing
@@ -55,16 +61,15 @@ jobs:
                 cache: 'pip'
                 cache-dependency-path: 'requirements-lock.txt'
 
-        -   name: Install dvc and Pull the Models
-            run: |
-                pip install dvc[s3]
-                dvc pull models/model.joblib models/feature_selector.joblib
-
         -   name: Configure AWS Credentials
             uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd #v6.3.0
             with:
                 role-to-assume: arn:aws:iam::412341941552:role/xyrova-image-app
-                aws-region: us-east-1
+
+        -   name: Install dvc and Pull the Models
+            run: |
+                pip install dvc[s3]
+                dvc pull models/model.joblib models/feature_selector.joblib
           
         -   name: Login to Docker Registry (ECR)
             uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 #v4.0.0
